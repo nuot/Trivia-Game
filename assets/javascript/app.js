@@ -1,3 +1,7 @@
+// need update js
+// still have trouble comparing with the correct answer & move to next question
+
+
 const quizContent = [
     q1 = {
         question: "what is my cat's name?",
