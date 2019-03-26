@@ -123,6 +123,8 @@ let inCorrect = 0
 let currQues = 0
 let i = 0
 let ifStart = false
+let isNext = false
+let correctAnswer = quizContent[i].correctAnswer
 
 document.addEventListener('click', event => {
     if (event.target.className === 'start' && ifStart === false) {
@@ -132,6 +134,7 @@ document.addEventListener('click', event => {
         document.querySelector('.submit').append(submitter)
         ifStart = true
         timeLeft()
+        answerCheck()
     }
 }
 )
@@ -140,16 +143,16 @@ document.addEventListener('click', event => {
 const dispQuestion = _ => {
     if (i >= quizContent.length) {
         document.querySelector('#quiz').innerHTML = `<h1>Game over!</h1>`
-        document.querySelector('#answer').innerHTML = `<h1>Your score:</h1>`
         document.querySelector('#timer').innerHTML = `<h1>Try again</h1>`
+        stopper()
 
     } else {
         quiz = quizContent[i].question
         choice = quizContent[i].choices
         rightAnswer = quizContent[i].correctAnswer
         document.querySelector('#quiz').innerHTML = '<h3>' + quiz + '</h3>'
-        document.querySelector('#choices').innerHTML = '<button> a </button>' + quizContent[i].choices.a + '<br></br>' + '<button> b </button>' + quizContent[i].choices.b + '<br></br>' + '<button> c </button>' + quizContent[i].choices.c + '<br></br>' + '<button> d</button>' + quizContent[i].choices.d + '<br></br>'
-        timer = 5
+        document.querySelector('#choices').innerHTML = '<button>a</button>' + quizContent[i].choices.a + '<br></br>' + '<button>b</button>' + quizContent[i].choices.b + '<br></br>' + '<button>c</button>' + quizContent[i].choices.c + '<br></br>' + '<button>d</button>' + quizContent[i].choices.d + '<br></br>'
+        timer = 10
     }
 }
 
@@ -173,23 +176,47 @@ const timeLeft = _ => {
         if (timer <= 0) {
             stopper()
             document.querySelector('.start').innerHTML = 'Time is up, next question!'
-            document.addEventListener('click', event =>{
-                if (event.target.className === 'start'){
-                    i++
-                    dispQuestion()
-                    timeLeft()
-                }
-            })
+            isNext = true
         }
     }
         , 1000)
 }
 
+// const answerCheck = _ =>{
+//     if (e.target. === correctAnswer){
+//         document.querySelector('.start').innerHTML = 'You Are Correct! Next Question!'
+//         i++
+//         dispQuestion(
+//         timeLeft()
+//         )
+//     }
+// }
+const answerCheck = _ => {
+    document.addEventListener('click', event => {
+        if (event.target.innerHTML === correctAnswer) {
+            i++
+            dispQuestion()
+            
+        } else {
+            i++
+            dispQuestion()
+        }
+    })
+}
 
+
+
+document.addEventListener('click', event => {
+    if (event.target.className === 'start' && isNext === true && timer <= 0) {
+        i++
+        dispQuestion()
+        timeLeft()
+    }
+})
 
 const stopper = _ => {
-            clearInterval(timeRemining)
-        }
+    clearInterval(timeRemining)
+}
 
 // const restart = _ =>{
 //     document.querySelector(`#quiz`).innerHTML = ''
